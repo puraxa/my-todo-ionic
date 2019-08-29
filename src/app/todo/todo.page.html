@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Todo lists
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="items">
+  <ion-text *ngIf="items.length == 0" color="danger">
+    <p>You currently don't have any todo lists created</p>
+  </ion-text>
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of items | sort : 'date_created' : 'desc'">
+      <ion-item [routerLink]="['/showtodo']" [queryParams]="{id: item._id}">
+        <ion-label>
+          {{item.name_of_list}}
+        </ion-label>
+      </ion-item>
+      <ion-item-options>
+        <ion-item-option style="background-color: red" (click)="deleteTodo(item)">
+          Delete
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="showModal()">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

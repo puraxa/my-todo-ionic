@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,21 +13,30 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {
   public appPages = [
     {
-      title: 'Home',
-      url: '/home',
-      icon: 'home'
+      title: 'Login',
+      url: '/login',
+      icon: 'ios-log-in',
+      logged: false
     },
     {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
+      title: 'Register',
+      url: '/register',
+      icon: 'ios-person-add',
+      logged: false
+    },
+    {
+      title: 'Todo list',
+      url: '/todo',
+      icon: 'list',
+      logged: true
     }
   ];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    public auth: AuthService
   ) {
     this.initializeApp();
   }
@@ -36,5 +46,6 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+    this.auth.checkToken();
   }
 }

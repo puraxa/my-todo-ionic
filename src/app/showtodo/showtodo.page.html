@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="items">
+      {{items.name_of_list}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="items">
+  <ion-text *ngIf="items.items.length == 0" color="danger">
+    <p>You dont have any items in this todo list</p>
+  </ion-text>
+  <ion-list>
+    <ion-item-divider *ngIf="items.items.length > 0">
+      <ion-label>
+        Not completed
+      </ion-label>
+    </ion-item-divider>
+    <ion-item-group *ngFor="let item of items.items | addProperty: 'edit': false | filter: 'isCompleted' : false | sort : 'dateCreated' : 'desc';let i = index">
+      <ion-item (click)="showActionSheet(item)" *ngIf="!item.edit">
+        {{item.value}}
+      </ion-item>
+      <ion-item *ngIf="item.edit">
+        <ion-label position="floating">
+          Edit item value
+        </ion-label>
+        <ion-input [(ngModel)]="item.value"></ion-input>
+        <ion-button slot="end" style="height: 80%;" (click)="editItem(item)"><ion-icon name="checkmark" size="large" slot="icon-only"></ion-icon></ion-button>
+        <ion-icon name="close" vertical="top" slot="end" (click)="closeEdit(item,i)"></ion-icon>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-divider *ngIf="items.items.length > 0">
+      <ion-label>
+        Completed
+      </ion-label>
+    </ion-item-divider>
+    <ion-item-group *ngFor="let item of items.items | addProperty: 'edit': false | filter: 'isCompleted': true | sort: 'dateCompleted' : 'desc'">
+      <ion-item (click)="showActionSheet(item)" *ngIf="!item.edit" class="done">
+        {{item.value}}
+      </ion-item>
+      <ion-item *ngIf="item.edit">
+        <ion-label position="floating">
+          Edit item value
+        </ion-label>
+        <ion-input [value]="item.value">
+
+        </ion-input>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="showModal()">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
