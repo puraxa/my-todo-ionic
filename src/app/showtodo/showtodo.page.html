@@ -37,7 +37,7 @@
         Completed
       </ion-label>
     </ion-item-divider>
-    <ion-item-group *ngFor="let item of items.items | addProperty: 'edit': false | filter: 'isCompleted': true | sort: 'dateCompleted' : 'desc'">
+    <ion-item-group *ngFor="let item of items.items | addProperty: 'edit': false | filter: 'isCompleted': true | sort: 'dateCompleted' : 'desc'; let i = index">
       <ion-item (click)="showActionSheet(item)" *ngIf="!item.edit" class="done">
         {{item.value}}
       </ion-item>
@@ -45,9 +45,9 @@
         <ion-label position="floating">
           Edit item value
         </ion-label>
-        <ion-input [value]="item.value">
-
-        </ion-input>
+        <ion-input [(ngModel)]="item.value"></ion-input>
+        <ion-button slot="end" style="height: 80%;" (click)="editItem(item)"><ion-icon name="checkmark" size="large" slot="icon-only"></ion-icon></ion-button>
+        <ion-icon name="close" vertical="top" slot="end" (click)="closeEdit(item,i)"></ion-icon>
       </ion-item>
     </ion-item-group>
   </ion-list>
