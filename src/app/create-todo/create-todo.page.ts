@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { LoadingController } from '@ionic/angular';
 import { ErrorHandlingService } from '../error-handling.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-create-todo',
@@ -12,6 +13,7 @@ import { ErrorHandlingService } from '../error-handling.service';
 })
 export class CreateTodoPage implements OnInit {
   newTodoName: string;
+  public apiLink = environment.API_LINK;
   constructor(
     private modalController: ModalController,
     private http: HttpClient,
@@ -32,7 +34,7 @@ export class CreateTodoPage implements OnInit {
       });
       await loader.present();
       await this.http.post(
-        'https://todo-list-pura.herokuapp.com/createtodo',
+        this.apiLink + '/createtodo',
         {
           name: this.newTodoName,
         },

@@ -5,7 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ErrorHandlingService } from '../error-handling.service';
-
+import { environment } from '../../environments/environment';
 @Component({
   selector: 'app-register',
   templateUrl: 'register.page.html',
@@ -20,7 +20,7 @@ export class RegisterPage implements OnInit {
   ) 
   {
   }
-
+  public apiLink = environment.API_LINK;
   ngOnInit() {
   }
   register = async(formData) => {
@@ -42,7 +42,7 @@ export class RegisterPage implements OnInit {
           error: {message: "Passwords don't match"}
         }
       }
-      const response = await this.http.post('https://todo-list-pura.herokuapp.com/register',
+      const response = await this.http.post(this.apiLink + '/register',
           {email: data.email, password: data.password},
           {
             headers: {

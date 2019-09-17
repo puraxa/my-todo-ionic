@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { ErrorHandlingService } from '../error-handling.service';
-
+import { environment } from '../../environments/environment';
 @Component({
   selector: 'app-add-item',
   templateUrl: './add-item.page.html',
@@ -21,6 +21,7 @@ export class AddItemPage implements OnInit {
     private loadingController: LoadingController,
     private errorHandler: ErrorHandlingService
   ) { }
+  public apiLink = environment.API_LINK;
   newItemValue:string;
   id:string;
   ngOnInit() {
@@ -38,7 +39,7 @@ export class AddItemPage implements OnInit {
       });
       await loader.present();
       await this.http.post(
-        'https://todo-list-pura.herokuapp.com/additem',
+        this.apiLink + '/additem',
         {
           todoid: this.id,
           value: this.newItemValue

@@ -6,7 +6,7 @@ import { CreateTodoPage } from '../create-todo/create-todo.page';
 import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { ErrorHandlingService } from '../error-handling.service';
-
+import { environment } from '../../environments/environment';
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.page.html',
@@ -21,11 +21,12 @@ export class TodoPage implements OnInit {
     private alertController: AlertController,
     private errorHandler: ErrorHandlingService
   ) { }
+  public apiLink = environment.API_LINK;
   items;
   loadShow;
   ngOnInit() {
     this.showLoader();
-    this.http.get('https://todo-list-pura.herokuapp.com/gettodos', {
+    this.http.get(this.apiLink + '/gettodos', {
       headers: this.auth.authHeaders,
     }).subscribe(response => this.items = response);
   }
@@ -60,7 +61,7 @@ export class TodoPage implements OnInit {
                 }
               );
               await loader.present();
-              await this.http.post('https://todo-list-pura.herokuapp.com/deletetodo',
+              await this.http.post(this.apiLink + '/deletetodo',
                 {
                   todoid: item._id
                 },
@@ -68,7 +69,7 @@ export class TodoPage implements OnInit {
                   headers: this.auth.authHeaders
                 }
               ).toPromise();
-              this.items = await this.http.get('https://todo-list-pura.herokuapp.com/gettodos', {
+              this.items = await this.http.get(this.apiLink + '/gettodos', {
                 headers: this.auth.authHeaders
               }).toPromise();
               await loader.dismiss();
@@ -88,7 +89,7 @@ export class TodoPage implements OnInit {
       });
       await modal.present();
       await modal.onDidDismiss();
-      this.items = await this.http.get('https://todo-list-pura.herokuapp.com/gettodos', {
+      this.items = await this.http.get(this.apiLink + '/gettodos', {
         headers: this.auth.authHeaders
       }).toPromise();
       if(await this.loadingController.getTop()){

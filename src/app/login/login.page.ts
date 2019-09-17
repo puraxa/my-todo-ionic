@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { ErrorHandlingService } from '../error-handling.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,7 @@ export class LoginPage {
     private loadingController: LoadingController,
     private errorHandler: ErrorHandlingService
   ) {}
-
+  public apiLink = environment.API_LINK;
   login = async(formData) => {
     try {
       const loader = await this.loadingController.create({
@@ -29,7 +30,7 @@ export class LoginPage {
       await loader.present();
       const data = formData.form.value;
       const response = await this.http.post(
-        'https://todo-list-pura.herokuapp.com/login',
+        this.apiLink + '/login',
         {
           email: data.email,
           password: data.password,

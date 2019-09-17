@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,13 @@ export class AuthService {
   authHeaders = {
     'Content-type': 'application/json'
   };
+  public apiLink = environment.API_LINK;
   constructor(
     private http: HttpClient,
     private router: Router,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
   ) { }
-
   checkToken = async() => {
     try {
       const loader = await this.loadingController.create({
@@ -27,7 +28,7 @@ export class AuthService {
       await loader.present();
       this.authHeaders['Authorization'] = localStorage.getItem('token');
       await this.http.get(
-        'https://todo-list-pura.herokuapp.com/checkjwt',
+          this.apiLink+'/checkjwt',
         {
           headers: this.authHeaders
         }
@@ -47,7 +48,7 @@ export class AuthService {
       });
       await loader.present();
       await this.http.get(
-        'https://todo-list-pura.herokuapp.com/logout',
+          this.apiLink + '/logout',
         {
           headers: this.authHeaders
         }

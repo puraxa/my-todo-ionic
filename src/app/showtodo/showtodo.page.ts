@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
 import { AddItemPage } from '../add-item/add-item.page';
 import { async } from '@angular/core/testing';
 import { ErrorHandlingService } from '../error-handling.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-showtodo',
@@ -27,6 +28,7 @@ export class ShowtodoPage implements OnInit {
     private modalController: ModalController,
     private errorHandler: ErrorHandlingService
   ) { }
+  public apiLink = environment.API_LINK;
   id;
   items;
   ngOnInit() {
@@ -34,7 +36,7 @@ export class ShowtodoPage implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       this.id = params.id
     });
-    this.http.post('https://todo-list-pura.herokuapp.com/gettodo', {
+    this.http.post(this.apiLink + '/gettodo', {
       todoid: this.id,
     },
     {
@@ -111,13 +113,13 @@ export class ShowtodoPage implements OnInit {
                   animated: true
                 });
                 await loader.present();
-                await this.http.post('https://todo-list-pura.herokuapp.com/deleteitem', {
+                await this.http.post(this.apiLink + '/deleteitem', {
                   itemid: id,
                   todoid: this.items._id
                 },{
                   headers: this.auth.authHeaders
                 }).toPromise();
-                this.items = await this.http.post('https://todo-list-pura.herokuapp.com/gettodo', {
+                this.items = await this.http.post(this.apiLink + '/gettodo', {
                   todoid: this.id,
                 },
                 {
@@ -152,7 +154,7 @@ export class ShowtodoPage implements OnInit {
       await modal.present();
       await modal.onDidDismiss();
       this.items = await this.http.post(
-        'https://todo-list-pura.herokuapp.com/gettodo',
+        this.apiLink + '/gettodo',
         {
           todoid: this.id
         },
@@ -172,7 +174,7 @@ export class ShowtodoPage implements OnInit {
       const loader = await this.loadingController.create({});
       await loader.present();
       await this.http.post(
-        'https://todo-list-pura.herokuapp.com/completeitem',
+        this.apiLink + '/completeitem',
         {
           todoid: this.id,
           itemid: id
@@ -182,7 +184,7 @@ export class ShowtodoPage implements OnInit {
         }
       ).toPromise();
       this.items = await this.http.post(
-        'https://todo-list-pura.herokuapp.com/gettodo',
+        this.apiLink + '/gettodo',
         {
           todoid: this.id
         },
@@ -202,7 +204,7 @@ export class ShowtodoPage implements OnInit {
       });
       await loader.present();
       const response = await this.http.post(
-        'https://todo-list-pura.herokuapp.com/gettodo',
+        this.apiLink + '/gettodo',
         {
           todoid: this.id
         },
@@ -218,7 +220,7 @@ export class ShowtodoPage implements OnInit {
               text: 'No',
               handler: async() => {
                 this.items = await this.http.post(
-                  'https://todo-list-pura.herokuapp.com/gettodo',
+                  this.apiLink + '/gettodo',
                   {
                     todoid: this.id
                   },
@@ -253,7 +255,7 @@ export class ShowtodoPage implements OnInit {
       });
       await loader.present();
       await this.http.post(
-        'https://todo-list-pura.herokuapp.com/edititem',
+        this.apiLink + '/edititem',
         {
           todoid: this.id,
           itemid: item._id,
@@ -264,7 +266,7 @@ export class ShowtodoPage implements OnInit {
         }
       ).toPromise();
       this.items = await this.http.post(
-        'https://todo-list-pura.herokuapp.com/gettodo',
+        this.apiLink + '/gettodo',
         {
           todoid: this.id
         },
