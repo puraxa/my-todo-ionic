@@ -42,7 +42,7 @@ export class RegisterPage implements OnInit {
           error: {message: "Passwords don't match"}
         }
       }
-      const response = await this.http.post(this.apiLink + '/register',
+      const response = await this.http.post(this.apiLink + '/user/register',
           {email: data.email, password: data.password},
           {
             headers: {

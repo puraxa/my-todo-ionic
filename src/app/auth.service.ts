@@ -28,7 +28,7 @@ export class AuthService {
       await loader.present();
       this.authHeaders['Authorization'] = localStorage.getItem('token');
       await this.http.get(
-          this.apiLink+'/checkjwt',
+          this.apiLink+'/user/check-auth',
         {
           headers: this.authHeaders
         }
@@ -48,7 +48,7 @@ export class AuthService {
       });
       await loader.present();
       await this.http.get(
-          this.apiLink + '/logout',
+          this.apiLink + '/user/logout',
         {
           headers: this.authHeaders
         }

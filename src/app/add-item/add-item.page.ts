@@ -39,9 +39,8 @@ export class AddItemPage implements OnInit {
       });
       await loader.present();
       await this.http.post(
-        this.apiLink + '/additem',
+        this.apiLink + `/todo/${this.id}`,
         {
-          todoid: this.id,
           value: this.newItemValue
         },
         {

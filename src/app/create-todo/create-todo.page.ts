@@ -34,7 +34,7 @@ export class CreateTodoPage implements OnInit {
       });
       await loader.present();
       await this.http.post(
-        this.apiLink + '/createtodo',
+        this.apiLink + '/todo',
         {
           name: this.newTodoName,
         },

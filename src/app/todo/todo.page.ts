@@ -26,7 +26,7 @@ export class TodoPage implements OnInit {
   loadShow;
   ngOnInit() {
     this.showLoader();
-    this.http.get(this.apiLink + '/gettodos', {
+    this.http.get(this.apiLink + '/todo', {
       headers: this.auth.authHeaders,
     }).subscribe(response => this.items = response);
   }
@@ -61,15 +61,12 @@ export class TodoPage implements OnInit {
                 }
               );
               await loader.present();
-              await this.http.post(this.apiLink + '/deletetodo',
-                {
-                  todoid: item._id
-                },
+              await this.http.delete(this.apiLink + `/todo/${item._id}`,
                 {
                   headers: this.auth.authHeaders
                 }
               ).toPromise();
-              this.items = await this.http.get(this.apiLink + '/gettodos', {
+              this.items = await this.http.get(this.apiLink + '/todo', {
                 headers: this.auth.authHeaders
               }).toPromise();
               await loader.dismiss();
@@ -89,7 +86,7 @@ export class TodoPage implements OnInit {
       });
       await modal.present();
       await modal.onDidDismiss();
-      this.items = await this.http.get(this.apiLink + '/gettodos', {
+      this.items = await this.http.get(this.apiLink + '/todo', {
         headers: this.auth.authHeaders
       }).toPromise();
       if(await this.loadingController.getTop()){

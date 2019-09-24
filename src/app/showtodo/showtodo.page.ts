@@ -36,9 +36,7 @@ export class ShowtodoPage implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       this.id = params.id
     });
-    this.http.post(this.apiLink + '/gettodo', {
-      todoid: this.id,
-    },
+    this.http.get(this.apiLink + `/todo/${this.id}`,
     {
       headers: this.auth.authHeaders,
     }).subscribe(response => this.items = response);
@@ -113,15 +111,11 @@ export class ShowtodoPage implements OnInit {
                   animated: true
                 });
                 await loader.present();
-                await this.http.post(this.apiLink + '/deleteitem', {
-                  itemid: id,
-                  todoid: this.items._id
-                },{
+                await this.http.delete(this.apiLink + `/todo/${this.id}/item/${id}`, 
+                {
                   headers: this.auth.authHeaders
                 }).toPromise();
-                this.items = await this.http.post(this.apiLink + '/gettodo', {
-                  todoid: this.id,
-                },
+                this.items = await this.http.get(this.apiLink + '/todo/' + this.id,
                 {
                   headers: this.auth.authHeaders,
                 }).toPromise();
@@ -153,11 +147,8 @@ export class ShowtodoPage implements OnInit {
       });
       await modal.present();
       await modal.onDidDismiss();
-      this.items = await this.http.post(
-        this.apiLink + '/gettodo',
-        {
-          todoid: this.id
-        },
+      this.items = await this.http.get(
+        this.apiLink + '/todo/'+this.id,
         {
           headers: this.auth.authHeaders
         }
@@ -173,8 +164,8 @@ export class ShowtodoPage implements OnInit {
     try {
       const loader = await this.loadingController.create({});
       await loader.present();
-      await this.http.post(
-        this.apiLink + '/completeitem',
+      await this.http.patch(
+        this.apiLink + `/todo/${this.id}/item/${id}/complete`,
         {
           todoid: this.id,
           itemid: id
@@ -183,11 +174,8 @@ export class ShowtodoPage implements OnInit {
           headers: this.auth.authHeaders
         }
       ).toPromise();
-      this.items = await this.http.post(
-        this.apiLink + '/gettodo',
-        {
-          todoid: this.id
-        },
+      this.items = await this.http.get(
+        this.apiLink + '/todo/'+ this.id,
         {
           headers: this.auth.authHeaders
         }
@@ -203,11 +191,8 @@ export class ShowtodoPage implements OnInit {
         message: 'Please wait...'
       });
       await loader.present();
-      const response = await this.http.post(
-        this.apiLink + '/gettodo',
-        {
-          todoid: this.id
-        },
+      const response = await this.http.get(
+        this.apiLink + '/todo/' + this.id,
         {
           headers: this.auth.authHeaders
         }
@@ -219,11 +204,8 @@ export class ShowtodoPage implements OnInit {
             {
               text: 'No',
               handler: async() => {
-                this.items = await this.http.post(
-                  this.apiLink + '/gettodo',
-                  {
-                    todoid: this.id
-                  },
+                this.items = await this.http.get(
+                  this.apiLink + '/todo/' + this.id,
                   {
                     headers: this.auth.authHeaders
                   }
@@ -254,22 +236,17 @@ export class ShowtodoPage implements OnInit {
         message: 'Updating item....'
       });
       await loader.present();
-      await this.http.post(
-        this.apiLink + '/edititem',
+      await this.http.patch(
+        this.apiLink + `/todo/${this.id}/item/${item._id}/edit`,
         {
-          todoid: this.id,
-          itemid: item._id,
           value: item.value
         },
         {
           headers: this.auth.authHeaders
         }
       ).toPromise();
-      this.items = await this.http.post(
-        this.apiLink + '/gettodo',
-        {
-          todoid: this.id
-        },
+      this.items = await this.http.get(
+        this.apiLink + '/todo/' + this.id,
         {
           headers: this.auth.authHeaders
         }

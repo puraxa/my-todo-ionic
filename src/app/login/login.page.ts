@@ -30,7 +30,7 @@ export class LoginPage {
       await loader.present();
       const data = formData.form.value;
       const response = await this.http.post(
-        this.apiLink + '/login',
+        this.apiLink + '/user/login',
         {
           email: data.email,
           password: data.password,
